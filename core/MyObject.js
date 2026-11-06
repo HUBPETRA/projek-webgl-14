@@ -58,6 +58,7 @@ class MyObject {
                 "Mmatrix"
             );
 
+        this._Nmatrix = GL.getUniformLocation(shaderProgram, "Nmatrix");
         this.setup();
     }
 
@@ -427,6 +428,8 @@ class MyObject {
             GL.ELEMENT_ARRAY_BUFFER,
             this.indexBuffer
         );
+
+        GL.uniformMatrix3fv(this._Nmatrix, false, Mat4.normal(this.MODEL_MATRIX));
 
         GL.drawElements(
             GL.TRIANGLES,

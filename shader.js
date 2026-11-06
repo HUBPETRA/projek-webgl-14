@@ -6,6 +6,7 @@ const VERTEX_SHADER_SOURCE = `
     uniform mat4 Pmatrix;
     uniform mat4 Vmatrix;
     uniform mat4 Mmatrix;
+    uniform mat3 Nmatrix;
 
     varying vec3 vColor;
     varying vec3 vNormal;
@@ -20,13 +21,11 @@ const VERTEX_SHADER_SOURCE = `
         vColor = color;
 
         /*
-            MODEL_MATRIX saat ini hanya memakai
-            translation + rotation.
-            Normal bisa ditransform dengan mat3(Mmatrix).
+            Normal memakai inverse transpose agar scaling tidak merusak pencahayaan.
         */
         vNormal =
             normalize(
-                mat3(Mmatrix) *
+                Nmatrix *
                 normal
             );
     }

@@ -1,96 +1,17 @@
 <!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelompok 14 - Kung Fu Panda WebGL</title>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: #0f1713;
-            font-family: Arial, sans-serif;
-        }
-
-        canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-            cursor: grab;
-        }
-
-        canvas:active {
-            cursor: grabbing;
-        }
-
-        .info {
-            position: fixed;
-            left: 18px;
-            top: 16px;
-            z-index: 10;
-            color: white;
-            background: rgba(0, 0, 0, 0.48);
-            padding: 12px 14px;
-            border-radius: 10px;
-            line-height: 1.45;
-            pointer-events: none;
-        }
-
-        .info strong {
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .names {
-            position: fixed;
-            left: 50%;
-            bottom: 18px;
-            transform: translateX(-50%);
-            z-index: 10;
-            color: white;
-            background: rgba(0, 0, 0, 0.42);
-            padding: 8px 16px;
-            border-radius: 999px;
-            pointer-events: none;
-            white-space: nowrap;
-        }
-        .info { max-width: 380px; font-size: 13px; }
-        .toolbar {position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:20;display:flex;flex-wrap:wrap;justify-content:center;gap:6px;width:min(96%,690px);padding:10px;background:#101c18e8;border:1px solid #456152;border-radius:14px;}
-        button {padding:9px 13px;border:1px solid #466354;border-radius:7px;background:#203c2e;color:#e5efe7;cursor:pointer;}
-        button:hover,button[aria-pressed="true"]{background:#a5d3aa;color:#102718;}
-        #status {color:#b6d8bd;margin-top:6px;}
-        @media(max-width:600px){.info{font-size:11px;top:8px;left:8px;max-width:270px}.toolbar{bottom:8px}button{padding:7px 9px}}
-    </style>
-</head>
-<body>
-    <div class="info">
-        <strong>Kelompok 14 — WebGL 3D</strong>
-        Drag: orbit camera<br>
-        Scroll: zoom<br>
-        Double click: reset camera
-        <div id="status"></div>
-    </div>
-
-    <nav class="toolbar" aria-label="Kontrol model">
-        <button data-character="-1" aria-pressed="true">Semua</button>
-        <button data-character="0" aria-pressed="false">Shifu</button>
-        <button data-character="1" aria-pressed="false">Oogway</button>
-        <button data-character="2" aria-pressed="false">Kai</button>
-        <button id="front">Depan</button><button id="side">Samping</button><button id="back">Belakang</button>
-        <button id="spin" aria-pressed="false">Putar otomatis</button>
-    </nav>
-
-    <canvas id="mycanvas"></canvas>
-
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kai — The Golden Palace</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#c2c7b0;color:#f5ebd1;font:14px system-ui,sans-serif;overflow:hidden}canvas{display:block;width:100vw;height:100vh;cursor:grab}canvas:active{cursor:grabbing}.heading{position:fixed;top:24px;left:28px;pointer-events:none;text-shadow:0 2px 16px #182c25}.eyebrow{font-size:10px;letter-spacing:3px;color:#f6d18a}.heading h1{font-family:Georgia,serif;font-weight:400;font-size:32px;margin:7px 0}.heading p{margin:0;color:#fff5dc;font-size:12px}.badge{position:fixed;right:24px;top:24px;border:1px solid #f1cd8c55;padding:9px 14px;border-radius:30px;background:#172b25b8;font-size:11px;letter-spacing:1px}.controls{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:min(800px,calc(100% - 24px));background:#172b25ed;border:1px solid #d0b57855;border-radius:16px;padding:16px 20px;box-shadow:0 12px 40px #12251c33}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.progress{margin:12px 0}.progress input{flex:1;min-width:80px;accent-color:#dcb779}.clock{font-variant-numeric:tabular-nums;font-size:12px;min-width:80px;color:#d6d5bc}button,select{font:inherit;color:#f4e8cd;background:#243d33;border:1px solid #64735b;border-radius:7px;padding:8px 12px;cursor:pointer}button:hover,button[aria-pressed=true]{background:#d8b77b;color:#1d3026;border-color:#d8b77b}#play{background:#dfbd7f;color:#172b25;min-width:67px}.secondary{font-size:11px;color:#c1c8b2;justify-content:space-between}.secondary label{display:flex;align-items:center;gap:5px}input[type=checkbox]{accent-color:#d8b77b}#status{margin-left:auto;color:#e6c98d;font-size:12px}.help{margin-top:10px;font-size:10px;color:#b5bea8}@media(max-width:600px){.heading{top:16px;left:16px}.heading h1{font-size:25px}.badge{display:none}.controls{padding:12px;bottom:10px}.row{gap:5px}button,select{padding:7px 9px;font-size:12px}.heading p{max-width:260px}#status{margin-left:0}}
+</style></head><body>
+<canvas id="mycanvas" aria-label="Adegan 3D Kai dan Golden Palace"></canvas>
+<header class="heading"><div class="eyebrow">KUNG FU PANDA · WEBGL</div><h1>The Golden Palace</h1><p>Kai datang. Oogway menghadang.</p></header><div class="badge">KELOMPOK 14</div>
+<section class="controls" aria-label="Kontrol adegan">
+<div class="row"><button id="play">Jeda</button><button id="restart">Ulangi</button>
+<select id="stage" aria-label="Pilih adegan"><option value="0">Kedatangan</option><option value="8">Dihadang</option><option value="10">Serangan dekat</option><option value="15">Lempar rantai</option><option value="21">Serangan balasan</option><option value="24">Berlutut</option><option value="27">Tumbang</option></select><span id="status" role="status">Menyiapkan adegan…</span></div>
+<div class="row progress"><input id="timeline" type="range" min="0" max="32" value="0" step="0.01" aria-label="Waktu animasi"><span id="clock" class="clock">0.0 / 32 s</span></div>
+<div class="row secondary"><div class="row"><button data-view="wide" aria-pressed="true">Istana</button><button data-view="kai" aria-pressed="false">Fokus Kai</button><button data-view="side" aria-pressed="false">Samping</button></div><label><input id="environment" type="checkbox" checked>Environment</label><label><input id="oogway" type="checkbox" checked>Oogway</label><select id="speed" aria-label="Kecepatan animasi"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option></select></div>
+<div class="help">Drag untuk orbit · Scroll untuk zoom · Klik dua kali untuk reset kamera</div></section>
     <script src="libs.js"></script>
     <script src="shader.js"></script>
 
@@ -111,8 +32,12 @@
     <script src="characters/CharacterUtils.js"></script>
     <script src="characters/Shifu.js"></script>
     <script src="characters/Oogway.js"></script>
+    <script src="core/SceneNode.js"></script>
+    <script src="animation/KaiWeapon.js"></script>
+    <script src="animation/KaiAnimation.js"></script>
     <script src="characters/Kai.js"></script>
+    <script src="environment/Environment.js"></script>
+    <script src="animation/SceneDirector.js"></script>
 
     <script src="main.js"></script>
-</body>
-</html>
+</body></html>
