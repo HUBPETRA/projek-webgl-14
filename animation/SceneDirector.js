@@ -1,46 +1,26 @@
-// Penghubung sementara dengan Oogway. Model rekan tidak diubah.
-// Ganti updateOogway() dengan animasi final rekan; gunakan waktu/cues yang sama.
+// Hanya tiga karakter asli + lingkungan. Tidak ada properti komedi tambahan.
 class SceneDirector {
  constructor(gl,program){
+  this.duration=DuelAnimation.duration;this.events=DuelAnimation.cues;
   this.kai=new Kai(gl,program,0);
-  this.oogway=new Oogway(gl,program,0);
-  this.oogwayRoot=new SceneNode('oogwayPreviewRoot');
-  for(const mesh of this.oogway.builder.parts)this.oogwayRoot.attach(mesh);
-  this.environment=new Environment(gl,program);
-  this.shadowBuilder=new CharacterBuilder(gl,program,0);
-  this.kaiShadow=this.shadowBuilder.ellipsoid(1.0,.008,.72,0,.012,0,[.30,.33,.29]);
-  this.oogwayShadow=this.shadowBuilder.ellipsoid(.70,.008,.56,3.6,.012,0,[.30,.33,.29]);
-  this.counterBuilder=new CharacterBuilder(gl,program,0);
-  this.counterRing=this.counterBuilder.torus(.66,.065,0,0,0,[.64,.89,.53]);
-  this.counterCore=this.counterBuilder.ellipsoid(.19,.19,.19,0,0,0,[.84,.97,.66]);
-  this.time=0;this.duration=KaiAnimation.duration;
-  this.events=KaiAnimation.cues;
+  this.oogRig=CharacterRigs.oogway(gl,program);this.oogway=this.oogRig.model;this.oogwayRoot=this.oogRig.root;
+  this.pingRig=CharacterRigs.ping(gl,program);this.ping=this.pingRig.model;this.pingRoot=this.pingRig.root;
+  this.environment=new NoodleRestaurant(gl,program);
+  this.shadows=new CharacterBuilder(gl,program,0);
+  this.shadowMeshes=[this.shadows.ellipsoid(.98,.009,.70,0,0,0,[.29,.28,.22]),this.shadows.ellipsoid(.73,.009,.64,0,0,0,[.29,.28,.22]),this.shadows.ellipsoid(.62,.009,.46,0,0,0,[.29,.28,.22])];
+  this.update(0);
  }
  update(seconds){
   this.time=Math.max(0,Math.min(this.duration,seconds));
-  this.kai.update(this.time);this.updateOogway(this.time);
-  const fall=KaiAnimation.smooth(27.3,30,this.time),pos=this.kai.root.position;
-  this.kaiShadow.MODEL_MATRIX=Mat4.multiply(Mat4.translation(pos[0],.013,pos[2]+fall*.7),Mat4.scaling(1,1,1+fall));
-  this.oogwayShadow.MODEL_MATRIX=Mat4.translation(this.oogwayRoot.position[0],.013,this.oogwayRoot.position[2]);
+  DuelAnimation.oogway(this,this.time);DuelAnimation.ping(this,this.time);DuelAnimation.kai(this,this.time);DuelAnimation.finalizeStaff(this,this.time);
+  CharacterRigs.keepStaffAboveFloor(this.oogRig.staff);
+  [this.kai.root,this.oogwayRoot,this.pingRoot].forEach((root,i)=>this.shadowMeshes[i].MODEL_MATRIX=Mat4.translation(root.position[0],.018,root.position[2]));
  }
- updateOogway(t){
-  const smooth=(a,b)=>KaiAnimation.smooth(a,b,t),pulse=(a,b,c,d)=>KaiAnimation.pulse(a,b,c,d,t);
-  const dodge=pulse(16,16.6,17.6,18.3)+pulse(18.4,19,20,20.7);
-  const counter=pulse(20.8,21.4,22,23.3);
-  this.oogwayRoot.position=[3.6-.80*counter,1.87,.8*dodge];
-  this.oogwayRoot.rotation=[0,-Math.PI/2,-.08*counter];
-  this.oogwayRoot.updateWorld();
-  this.counterVisible=t>=20.9&&t<=21.6;
-  const travel=smooth(20.9,21.3);
-  const chi=Mat4.translation(3.2-5.7*travel,2.3,0);
-  this.counterRing.MODEL_MATRIX=Mat4.multiply(chi,Mat4.multiply(Mat4.axisRotation([0,0,1],Math.PI/2),Mat4.scaling(.5+.7*travel)));
-  this.counterCore.MODEL_MATRIX=chi;
- }
- draw(view,projection,{environment=true,oogway=true}={}){
-  if(environment)this.environment.draw(view,projection);
-  if(environment){this.kaiShadow.render(view,projection);if(oogway)this.oogwayShadow.render(view,projection);}
-  if(oogway)this.oogwayRoot.draw(view,projection);
-  this.kai.draw(view,projection);
-  if(oogway&&this.counterVisible)this.counterBuilder.draw(view,projection);
+ draw(v,p,{environment=true,solo=null}={}){
+  if(environment)this.environment.draw(v,p);
+  for(const [i,name] of ['kai','oogway','ping'].entries())if((!solo||solo===name)&&environment)this.shadowMeshes[i].render(v,p);
+  if(!solo||solo==='kai')this.kai.draw(v,p);
+  if(!solo||solo==='oogway')this.oogwayRoot.draw(v,p);
+  if(!solo||solo==='ping')this.pingRoot.draw(v,p);
  }
 }

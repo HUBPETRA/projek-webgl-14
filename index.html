@@ -1,43 +1,45 @@
 <!DOCTYPE html>
-<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kai — The Golden Palace</title>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>Duel di Restoran Mi</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#c2c7b0;color:#f5ebd1;font:14px system-ui,sans-serif;overflow:hidden}canvas{display:block;width:100vw;height:100vh;cursor:grab}canvas:active{cursor:grabbing}.heading{position:fixed;top:24px;left:28px;pointer-events:none;text-shadow:0 2px 16px #182c25}.eyebrow{font-size:10px;letter-spacing:3px;color:#f6d18a}.heading h1{font-family:Georgia,serif;font-weight:400;font-size:32px;margin:7px 0}.heading p{margin:0;color:#fff5dc;font-size:12px}.badge{position:fixed;right:24px;top:24px;border:1px solid #f1cd8c55;padding:9px 14px;border-radius:30px;background:#172b25b8;font-size:11px;letter-spacing:1px}.controls{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:min(800px,calc(100% - 24px));background:#172b25ed;border:1px solid #d0b57855;border-radius:16px;padding:16px 20px;box-shadow:0 12px 40px #12251c33}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.progress{margin:12px 0}.progress input{flex:1;min-width:80px;accent-color:#dcb779}.clock{font-variant-numeric:tabular-nums;font-size:12px;min-width:80px;color:#d6d5bc}button,select{font:inherit;color:#f4e8cd;background:#243d33;border:1px solid #64735b;border-radius:7px;padding:8px 12px;cursor:pointer}button:hover,button[aria-pressed=true]{background:#d8b77b;color:#1d3026;border-color:#d8b77b}#play{background:#dfbd7f;color:#172b25;min-width:67px}.secondary{font-size:11px;color:#c1c8b2;justify-content:space-between}.secondary label{display:flex;align-items:center;gap:5px}input[type=checkbox]{accent-color:#d8b77b}#status{margin-left:auto;color:#e6c98d;font-size:12px}.help{margin-top:10px;font-size:10px;color:#b5bea8}@media(max-width:600px){.heading{top:16px;left:16px}.heading h1{font-size:25px}.badge{display:none}.controls{padding:12px;bottom:10px}.row{gap:5px}button,select{padding:7px 9px;font-size:12px}.heading p{max-width:260px}#status{margin-left:0}}
+*{box-sizing:border-box}body{margin:0;overflow:hidden;background:#aebaa6;color:#fff2d4;font:14px system-ui,sans-serif}canvas{display:block;width:100vw;height:100vh;cursor:default}
+button,select{font:inherit;color:#f4e8cd;background:#4c3829;border:1px solid #8b7152;border-radius:8px;padding:10px 18px;cursor:pointer}button:hover,button:focus-visible{background:#ddb46e;color:#30241f}button:focus-visible,select:focus-visible{outline:2px solid #ffe0a0;outline-offset:3px}
+.controls{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:9px;padding:10px;background:#30241ff2;border:1px solid #c6a26066;border-radius:14px;box-shadow:0 8px 30px #2a1f1633}#play{background:#e9bf75;color:#30241f;min-width:86px}
+.subtitle{position:fixed;bottom:106px;left:50%;transform:translateX(-50%);text-align:center;width:min(680px,90%);pointer-events:none;text-shadow:0 2px 5px #21180e}.subtitle strong{display:inline-block;color:#ffda86;font-size:10px;letter-spacing:2px;background:#30241fd9;border-radius:5px;padding:5px 10px}.subtitle p{margin:6px 0;background:#30241fe8;border:1px solid #c6a26055;border-radius:10px;padding:11px 18px;font-size:16px;line-height:1.5}
+.rubric-panel{position:fixed;right:22px;top:22px;width:310px;max-height:calc(100vh - 125px);overflow:auto;background:#30241ff2;border:1px solid #c6a26088;border-radius:12px;padding:15px;font-size:11px;color:#e4d3b5}.rubric-panel h2{font:normal 20px Georgia,serif;margin:0 0 10px}.rubric-panel p{line-height:1.5;margin:8px 0}.rubric-panel select{width:100%;margin-bottom:5px;padding:9px}.rubric-panel button{display:block;text-align:left;width:100%;margin:5px 0;font-size:11px;padding:8px 10px}.rubric-panel a{color:#ffd794}.rubric-panel small{display:block;color:#b9a88e;line-height:1.5}.rubric-panel[hidden],.error[hidden]{display:none}.error{position:fixed;top:20px;left:50%;transform:translateX(-50%);max-width:90%;padding:12px 18px;border-radius:8px;background:#502b21}
+@media(max-width:650px){.controls{bottom:14px}.subtitle{bottom:96px}.subtitle p{font-size:13px}.rubric-panel{right:12px;top:12px;width:calc(100% - 24px);max-height:calc(100vh - 115px)}}
 </style></head><body>
-<canvas id="mycanvas" aria-label="Adegan 3D Kai dan Golden Palace"></canvas>
-<header class="heading"><div class="eyebrow">KUNG FU PANDA · WEBGL</div><h1>The Golden Palace</h1><p>Kai datang. Oogway menghadang.</p></header><div class="badge">KELOMPOK 14</div>
-<section class="controls" aria-label="Kontrol adegan">
-<div class="row"><button id="play">Jeda</button><button id="restart">Ulangi</button>
-<select id="stage" aria-label="Pilih adegan"><option value="0">Kedatangan</option><option value="8">Dihadang</option><option value="10">Serangan dekat</option><option value="15">Lempar rantai</option><option value="21">Serangan balasan</option><option value="24">Berlutut</option><option value="27">Tumbang</option></select><span id="status" role="status">Menyiapkan adegan…</span></div>
-<div class="row progress"><input id="timeline" type="range" min="0" max="32" value="0" step="0.01" aria-label="Waktu animasi"><span id="clock" class="clock">0.0 / 32 s</span></div>
-<div class="row secondary"><div class="row"><button data-view="wide" aria-pressed="true">Istana</button><button data-view="kai" aria-pressed="false">Fokus Kai</button><button data-view="side" aria-pressed="false">Samping</button></div><label><input id="environment" type="checkbox" checked>Environment</label><label><input id="oogway" type="checkbox" checked>Oogway</label><select id="speed" aria-label="Kecepatan animasi"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option></select></div>
-<div class="help">Drag untuk orbit · Scroll untuk zoom · Klik dua kali untuk reset kamera</div></section>
-    <script src="libs.js"></script>
-    <script src="shader.js"></script>
-
-    <script src="core/MyObject.js"></script>
-    <script src="core/Camera.js"></script>
-
-    <script src="objects/Ellipsoid.js"></script>
-    <script src="objects/Cylinder.js"></script>
-    <script src="objects/Cone.js"></script>
-    <script src="objects/EllipticParaboloid.js"></script>
-    <script src="objects/EllipticParaboloidSection.js"></script>
-    <script src="objects/TruncatedCone.js"></script>
-    <script src="objects/HyperboloidOneSheet.js"></script>
-    <script src="objects/Torus.js"></script>
-    <script src="objects/ExtrudedPolygon.js"></script>
-    <script src="objects/Bezier.js"></script>
-
-    <script src="characters/CharacterUtils.js"></script>
-    <script src="characters/Shifu.js"></script>
-    <script src="characters/Oogway.js"></script>
-    <script src="core/SceneNode.js"></script>
-    <script src="animation/KaiWeapon.js"></script>
-    <script src="animation/KaiAnimation.js"></script>
-    <script src="characters/Kai.js"></script>
-    <script src="environment/Environment.js"></script>
-    <script src="animation/SceneDirector.js"></script>
-
-    <script src="main.js"></script>
+<canvas id="mycanvas" aria-label="Duel 3D Kai, Oogway, dan Mr. Ping di restoran mi"></canvas>
+<div class="error" id="error" role="alert" hidden></div>
+<div class="subtitle" id="subtitles"><strong id="speaker"></strong><p id="dialogue"></p></div>
+<aside id="rubric-panel" class="rubric-panel" hidden><h2>Penilaian per karakter</h2><select id="rubric-character" aria-label="Karakter penilaian"><option value="kai">Kai</option><option value="oogway">Oogway</option><option value="ping">Mr. Ping / Shifu</option></select><div id="rubric-content"></div><a href="presentasi.html" target="_blank" rel="noopener">Peta 10 kriteria × 3 karakter ↗</a></aside>
+<section class="controls" aria-label="Kontrol animasi"><button id="play" aria-pressed="false">Play</button><button id="rubric-toggle" aria-expanded="false" aria-controls="rubric-panel">Penilaian</button></section>
+<script src="libs.js"></script>
+<script src="shader.js"></script>
+<script src="core/MyObject.js"></script>
+<script src="core/Camera.js"></script>
+<script src="objects/Ellipsoid.js"></script>
+<script src="objects/Cylinder.js"></script>
+<script src="objects/Cone.js"></script>
+<script src="objects/EllipticParaboloid.js"></script>
+<script src="objects/EllipticParaboloidSection.js"></script>
+<script src="objects/TruncatedCone.js"></script>
+<script src="objects/HyperboloidOneSheet.js"></script>
+<script src="objects/Torus.js"></script>
+<script src="objects/ExtrudedPolygon.js"></script>
+<script src="objects/Bezier.js"></script>
+<script src="characters/CharacterUtils.js"></script>
+<script src="characters/Shifu.js"></script>
+<script src="characters/Oogway.js"></script>
+<script src="core/SceneNode.js"></script>
+<script src="animation/KaiWeapon.js"></script>
+<script src="animation/KaiAnimation.js"></script>
+<script src="characters/Kai.js"></script>
+<script src="environment/Environment.js"></script>
+<script src="environment/NoodleRestaurant.js"></script>
+<script src="animation/CharacterRigs.js"></script>
+<script src="animation/DuelAnimation.js"></script>
+<script src="animation/Rubric.js"></script>
+<script src="animation/SceneDirector.js"></script>
+<script src="animation/CinematicCamera.js"></script>
+<script src="main.js"></script>
 </body></html>

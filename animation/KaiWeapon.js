@@ -8,17 +8,18 @@ class KaiWeapon {
   this.rest=[this.handle,this.blade].map(p=>new Float32Array(p.MODEL_MATRIX));
   this.links=[];
   for(let i=0;i<64;i++)this.links.push(B.torus(.058,.018,0,0,0,[.53,.57,.49]));
-  this.tip=[0,0,0];this.anchor=[0,0,0];
+  this.tip=[0,0,0];this.anchor=[0,0,0];this.spinAxis=[.32,.84,.44];this.spinAngle=0;this.spinWeight=0;
  }
  update(t,spinWeight,throwWeight,fallWeight){
   const s=this.side;
   // Arbitrary axis [0.32, 0.84, 0.44]: bukan hanya rotasi X/Y/Z.
-  const rotation=Mat4.axisRotation([.32,.84,.44],t*5.6+s*.9);
+  this.spinAngle=t*5.6+s*.9;this.spinWeight=spinWeight;
+  const rotation=Mat4.axisRotation(this.spinAxis,this.spinAngle);
   const orbit=Mat4.point(rotation,[0,0,1.12]);
   let end=[s*.18,-.04,.20].map((v,i)=>v+(orbit[i]-v)*spinWeight);
   // Lemparan menuju lawan, dalam koordinat dunia; kembali ke ruang tangan.
   const start=Mat4.point(this.hand.world,[s*.12,0,.12]);
-  const target=[3.30,2.25,-.05];
+  const target=this.targetOverride||[3.30,2.25,-.05];
   const localTarget=Mat4.point(Mat4.inverseRigid(this.hand.world),target);
   end=end.map((v,i)=>v+(localTarget[i]-v)*throwWeight);
   // Saat tumbang, senjata diturunkan ke lantai dengan transisi halus.
