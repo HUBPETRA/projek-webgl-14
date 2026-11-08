@@ -1,6 +1,6 @@
 # Duel di Restoran Mi — panduan presentasi
 
-Rubrik diterapkan kepada Kai, Oogway, dan Mr. Ping secara terpisah: 10 aspek × 10 poin untuk setiap karakter. File karakter asli dipertahankan, termasuk nama Shifu.js untuk Mr. Ping.
+Rubrik diterapkan kepada Kai, Oogway, dan Mr. Ping secara terpisah: 10 aspek × 10 poin untuk setiap karakter. Model Mr. Ping kini memakai characters/MrPing.js dan kelas MrPing. Dua lapisan dada Kai dihapus; napas memakai ellipsoid dada utama. Angka 10 poin adalah bobot rubrik, bukan nilai yang dijamin.
 
 ## Cara menunjukkan
 
@@ -17,10 +17,10 @@ Rubrik diterapkan kepada Kai, Oogway, dan Mr. Ping secara terpisah: 10 aspek × 
 | Object 1 · bebas | Ellipsoid: badan dan otot | Model asli |
 | Object 2 · bebas | Cylinder: lengan dan betis | Model asli |
 | Object 3 · quadric selain ellipsoid/cylinder | Hyperboloid satu lembar: pergelangan tangan | Model asli |
-| Aesthetic | Restoran sesuai latar cerita; interpolasi smoothstep, kontak lantai, gerak sendi dan normal matrix saat scaling. | Model asli |
+| Aesthetic | Restoran sesuai latar cerita; interpolasi smoothstep, kontak lantai, gerak sendi dan normal matrix saat scaling. Kualitas aesthetic dinilai dosen secara visual. | Lihat adegan lengkap |
 | Translate | Berjalan memasuki restoran | 0.5 detik |
 | Rotate | Kepala dan bahu berputar saat mengancam | 6 detik |
-| Scaling | Dada mengembang sebelum mengancam | 6.1 detik |
+| Scaling | Ellipsoid dada utama mengembang halus sebelum mengancam | 6.1 detik |
 | Arbitrary axis | Senjata berputar pada sumbu [0.32, 0.84, 0.44] | 0.7 detik |
 | Hierarchy | Bilah mengikuti bahu, siku, dan tangan saat menyerang | 20 detik |
 
@@ -36,7 +36,7 @@ Source model: characters/Kai.js. Gerak: animation/DuelAnimation.js. Rig tambahan
 | Object 1 · bebas | Ellipsoid: badan dan kepala | Model asli |
 | Object 2 · bebas | Cylinder: lengan dan batang tongkat | Model asli |
 | Object 3 · quadric selain ellipsoid/cylinder | Elliptic paraboloid: cangkang | Model asli |
-| Aesthetic | Restoran sesuai latar cerita; interpolasi smoothstep, kontak lantai, gerak sendi dan normal matrix saat scaling. | Model asli |
+| Aesthetic | Restoran sesuai latar cerita; interpolasi smoothstep, kontak lantai, gerak sendi dan normal matrix saat scaling. Kualitas aesthetic dinilai dosen secara visual. | Lihat adegan lengkap |
 | Translate | Melangkah maju melindungi Mr. Ping | 15 detik |
 | Rotate | Merendah dan memutar badan/cangkang | 28 detik |
 | Scaling | Badan mengembang saat menarik napas dan bersiap | 17.6 detik |
@@ -47,7 +47,7 @@ Hierarki: root → body → shoulder → elbow → wrist → tongkat.
 
 Source model: characters/Oogway.js. Gerak: animation/DuelAnimation.js. Rig tambahan: animation/CharacterRigs.js.
 
-## Mr. Ping (Shifu)
+## Mr. Ping
 
 | Aspek | Bukti pada karakter | Waktu mulai contoh |
 | --- | --- | --- |
@@ -55,7 +55,7 @@ Source model: characters/Oogway.js. Gerak: animation/DuelAnimation.js. Rig tamba
 | Object 1 · bebas | Ellipsoid: badan, kepala, dan mata | Model asli |
 | Object 2 · bebas | Cylinder: kancing jubah dan sumpit pada topi asli | Model asli |
 | Object 3 · quadric selain ellipsoid/cylinder | Elliptic paraboloid: paruh dan bulu sayap; hyperboloid: betis | Model asli |
-| Aesthetic | Restoran sesuai latar cerita; interpolasi smoothstep, kontak lantai, gerak sendi dan normal matrix saat scaling. | Model asli |
+| Aesthetic | Restoran sesuai latar cerita; interpolasi smoothstep, kontak lantai, gerak sendi dan normal matrix saat scaling. Kualitas aesthetic dinilai dosen secara visual. | Lihat adegan lengkap |
 | Translate | Berjalan dari konter untuk melerai | 8.5 detik |
 | Rotate | Menggeleng dan membuka kedua sayap | 10 detik |
 | Scaling | Badan mengembang sebelum mengomel | 38.4 detik |
@@ -64,7 +64,7 @@ Source model: characters/Oogway.js. Gerak: animation/DuelAnimation.js. Rig tamba
 
 Hierarki: root → body → shoulder → elbow → wrist → bulu sayap; body → neck → head → jaw.
 
-Source model: characters/Shifu.js. Gerak: animation/DuelAnimation.js. Rig tambahan: animation/CharacterRigs.js.
+Source model: characters/MrPing.js. Gerak: animation/DuelAnimation.js. Rig tambahan: animation/CharacterRigs.js.
 
 ## Penjelasan teknik singkat
 
@@ -85,3 +85,14 @@ Adegan merupakan skenario buatan di dunia Kung Fu Panda, bukan cuplikan film. Ge
 ## Kamera sinematik
 
 Kamera mengikuti alur: Kai (0–8,3 dtk), transisi ke Mr. Ping (8,3–9,3), Mr. Ping (9,3–14,5), transisi ke Oogway (14,5–15,7), Oogway (15,7–18,5), zoom keluar (18,5–20), tiga karakter selama duel (20–38,5), transisi dan fokus Mr. Ping (38,5–41,6), kemudian reaksi Kai (41,6–46). Framing memperhitungkan seluruh pose dan rasio layar. Kamera manual dinonaktifkan; Play/Pause dan Penilaian tetap tersedia.
+
+## Mode rekaman
+
+- F atau tombol Fullscreen: masuk/keluar fullscreen. Esc keluar fullscreen native browser.
+- H atau Sembunyikan UI: sembunyikan toolbar, panel penilaian, subtitle, dan kursor canvas. Tekan H lagi untuk mengembalikan.
+- Centang "Tetap tampilkan subtitle saat UI disembunyikan" sebelum H jika dialog ingin masuk video.
+- R atau Ulangi: putar ulang cerita lengkap dari nol, termasuk saat UI tersembunyi.
+- Space: play/pause. Kamera sinematik tetap aktif.
+- Buka index.html?clean=1 untuk tampilan bersih sejak awal; tambahkan &subtitles=1 untuk mempertahankan subtitle. Fullscreen tetap perlu F karena memerlukan aksi pengguna.
+
+Aplikasi menyediakan tampilan bersih untuk perekam layar, bukan perekam atau pengunggah YouTube.

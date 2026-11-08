@@ -83,84 +83,84 @@ const FRAGMENT_SHADER_SOURCE = `
 `;
 
 function compileShader(
-    GL,
-    source,
-    type
+  GL,
+  source,
+  type
 ) {
-    const shader =
-        GL.createShader(type);
+  const shader =
+    GL.createShader(type);
 
-    GL.shaderSource(
-        shader,
-        source
+  GL.shaderSource(
+    shader,
+    source
+  );
+
+  GL.compileShader(shader);
+
+  if (
+    !GL.getShaderParameter(
+      shader,
+      GL.COMPILE_STATUS
+    )
+  ) {
+    console.error(
+      "Shader error:",
+      GL.getShaderInfoLog(shader)
     );
 
-    GL.compileShader(shader);
+    GL.deleteShader(shader);
 
-    if (
-        !GL.getShaderParameter(
-            shader,
-            GL.COMPILE_STATUS
-        )
-    ) {
-        console.error(
-            "Shader error:",
-            GL.getShaderInfoLog(shader)
-        );
+    return null;
+  }
 
-        GL.deleteShader(shader);
-
-        return null;
-    }
-
-    return shader;
+  return shader;
 }
 
 function createShaderProgram(GL) {
-    const vertexShader =
-        compileShader(
-            GL,
-            VERTEX_SHADER_SOURCE,
-            GL.VERTEX_SHADER
-        );
-
-    const fragmentShader =
-        compileShader(
-            GL,
-            FRAGMENT_SHADER_SOURCE,
-            GL.FRAGMENT_SHADER
-        );
-
-    const program =
-        GL.createProgram();
-
-    GL.attachShader(
-        program,
-        vertexShader
+  const vertexShader =
+    compileShader(
+      GL,
+      VERTEX_SHADER_SOURCE,
+      GL.VERTEX_SHADER
     );
 
-    GL.attachShader(
-        program,
-        fragmentShader
+  const fragmentShader =
+    compileShader(
+      GL,
+      FRAGMENT_SHADER_SOURCE,
+      GL.FRAGMENT_SHADER
     );
 
-    GL.linkProgram(program);
+  const program =
+    GL.createProgram();
 
-    if (
-        !GL.getProgramParameter(
-            program,
-            GL.LINK_STATUS
-        )
-    ) {
-        console.error(
-            "Program error:",
-            GL.getProgramInfoLog(
-                program
-            )
-        );
+  GL.attachShader(
+    program,
+    vertexShader
+  );
 
-        return null;
-    }
+  GL.attachShader(
+    program,
+    fragmentShader
+  );
 
-    return program;
+  GL.linkProgram(program);
+
+  if (
+    !GL.getProgramParameter(
+      program,
+      GL.LINK_STATUS
+    )
+  ) {
+    console.error(
+      "Program error:",
+      GL.getProgramInfoLog(
+        program
+      )
+    );
+
+    return null;
+  }
+
+  return program;
 }
