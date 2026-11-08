@@ -115,3 +115,20 @@ Dalam `DuelAnimation.js`, `S(a,b)` adalah perubahan halus 0→1 antara detik a d
 Adapter Oogway/Mr. Ping memakai indeks mesh sesuai urutan builder. Angka indeks bukan koordinat. Saat menambah/menghapus bagian tubuh, perbarui jumlah yang diperiksa serta rentang di `CharacterRigs.js`; jika tidak, file sengaja menampilkan error agar sendi tidak salah dipasangkan. Kai memasang mesh lewat `B.joint`, sehingga tidak memakai indeks untuk pembagian anggota tubuh.
 
 Lingkungan statis digabung menjadi batch agar draw call lebih sedikit. Mesh pada satu batch dibatasi di bawah 65.536 vertex, sesuai indeks `UNSIGNED_SHORT` yang digunakan renderer.
+
+## 8. Environment setelah perluasan
+
+`environment/NoodleRestaurant.js` membagi lingkungan menjadi empat fungsi agar mudah dicari:
+
+| Fungsi | Bagian yang dibentuk |
+| --- | --- |
+| `createGround()` | Fondasi, 285 ubin, lis, garis inlay, tiga anak tangga |
+| `createBuilding()` | Dinding, pilar, jendela, atap, papan mi, lentera, konter, meja |
+| `createGarden()` dan `planter(x,z,height)` | Pagar, bangku, bambu, daun, semak, batu hias |
+| `createMountains()` | Tiga lapis bukit dari mesh parametrik dengan profil sinus |
+
+Objek `layout` di awal file mengatur ukuran halaman. `foundationWidth` dan `foundationDepth` adalah ukuran penuh fondasi; `columns`/`rows` mengatur jumlah ubin; `tileSpacing` adalah jarak antarpusat ubin, sedangkan `tileSize` adalah ukuran satu ubin. `centerZ` menggeser fondasi ke depan/belakang dan `fenceX` mengatur jarak pagar dari pusat. Semua memakai unit dunia yang sama dengan karakter.
+
+`environment/Sky.js` mengatur langit melalui `settings`: `horizonColor`, `zenithColor`, dan `groundColor` adalah RGB 0..1; `sunDirection` adalah arah matahari; `groundHeight` adalah ketinggian bidang tanah luar. Quad layar menggambar gradasi, noise awan, matahari, dan tanah luar. Basis kamera serta proyeksi menentukan arah tiap piksel sehingga latar tidak menempel pada layar dan tetap menutup frame setelah resize/fullscreen.
+
+Langit digambar lebih dulu tanpa penulisan depth, lalu depth diaktifkan kembali untuk mesh. Matahari adalah efek visual, bukan point light; shader lighting karakter tetap berada di `shader.js`. Properti `environment.stats` menyimpan jumlah sumber, vertex, segitiga, dan batch untuk pemeriksaan.

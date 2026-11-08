@@ -18,7 +18,8 @@ function main() {
   }
   gl.enable(gl.DEPTH_TEST);
   gl.depthFunc(gl.LEQUAL);
-  gl.clearColor(0.68, 0.73, 0.65, 1);
+  // Warna cadangan; Sky.js menggambar langit dan tanah luar pada frame sebenarnya.
+  gl.clearColor(0.82, 0.88, 0.84, 1);
   let scene;
   try {
     const program = createShaderProgram(gl);

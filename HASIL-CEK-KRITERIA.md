@@ -30,7 +30,7 @@ Torus atau bilah ekstrusi tidak dipakai sebagai bukti Object 3 karena keduanya b
 - Matriks world anak dan Rodrigues: `core/SceneNode.js`.
 - Hierarki Oogway/Mr. Ping: `animation/CharacterRigs.js`; hierarki Kai dibangun dalam konstruktornya.
 - Gerak aktif: `animation/DuelAnimation.js`; perhitungan senjata pada `animation/KaiWeapon.js`.
-- Environment: `environment/NoodleRestaurant.js` dan `environment/Environment.js`.
+- Environment: `environment/NoodleRestaurant.js`, `environment/Environment.js`, dan `environment/Sky.js`.
 - Tampilan bukti langsung: `animation/Rubric.js`, panel Penilaian di index.html, dan `presentasi.html`.
 
 ## Perbaikan napas Kai
@@ -38,6 +38,12 @@ Torus atau bilah ekstrusi tidak dipakai sebagai bukti Object 3 karena keduanya b
 Dua ellipsoid tipis di depan dada tetap dihapus. Node chest sekarang membawa **dua mesh torso asli**, disimpan sebagai `chestMesh` (tubuh utama yang terlihat) dan `upperChestMesh` (torso atas). Keduanya memakai skala yang sama agar gerakan tidak tertutup tubuh yang statis. Perut bawah tetap pada cabang torso. Jumlah bagian Kai tetap 228; tidak ada objek baru untuk animasi napas.
 
 `Kai.breathe(seconds, effort, strength)` memakai siklus 3 detik. Pengembangan maksimum normal pada kedalaman 8.5%, ditambah usaha 3.5% sehingga maksimum kuat 12%. Skala lebar maksimum 6.6% dan tinggi maksimum 3.36%. Kepala, bahu, tangan, dan senjata tidak ikut scaling.
+
+## Revisi environment
+
+Fondasi menjadi 36 × 30 unit dan lantai menjadi 285 ubin, tanpa mengubah ukuran satu ubin atau karakter. Enam taman pot, dua bangku, batu, tangga, pagar samping, dan tiga lapis pegunungan memperkaya latar. Sky menggambar langit bergradasi, awan, matahari, serta tanah luar sesuai piksel yang terlihat. Mesh statis berisi 76.378 vertex / 115.684 segitiga dalam dua batch; tiap batch maksimal 58.000 vertex.
+
+Basis kamera dan posisi mata diperiksa pada 279 sampel untuk rasio 4:3, 16:9, dan 21:9. Sepuluh frame termasuk shot lebar tiga rasio telah dirender dengan shader mesh dan Sky melalui OpenGL/EGL tanpa error. Pemeriksaan ini tidak mengukur FPS atau izin fullscreen native browser. Berkas karakter, rig, gerak senjata, dan koreografi tetap identik dengan revisi sebelumnya.
 
 ## Pemeriksaan yang dilakukan
 

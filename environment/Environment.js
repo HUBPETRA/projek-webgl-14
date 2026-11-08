@@ -6,7 +6,12 @@ class Environment {
     this.program = program;
     this.create();
     this.batch();
+    this.sky = new Sky(gl);
   }
+  /**
+   * Balok: x/y/z adalah pusat, w/h/d adalah ukuran penuh X/Y/Z,
+   * color adalah RGB 0..1. Semua ukuran memakai unit dunia yang sama dengan karakter.
+   */
   box(x, y, z, w, h, d, color) {
     const v = [],
       f = [];
@@ -84,6 +89,7 @@ class Environment {
   }
   batch() {
     const out = [];
+    this.stats = {sourceMeshes: this.builder.parts.length, vertices: 0, triangles: 0};
     let vertices = [],
       faces = [];
     const flush = () => {
@@ -93,6 +99,8 @@ class Environment {
       faces = [];
     };
     for (const mesh of this.builder.parts) {
+      this.stats.vertices += mesh.vertices.length / 6;
+      this.stats.triangles += mesh.faces.length / 3;
       if (vertices.length / 6 + mesh.vertices.length / 6 > 58000) flush();
       const offset = vertices.length / 6;
       for (let i = 0; i < mesh.vertices.length; i += 6) vertices.push(...Mat4.point(mesh
@@ -103,8 +111,10 @@ class Environment {
     }
     flush();
     this.builder.parts = out;
+    this.stats.batches = out.length;
   }
   draw(v, p) {
+    this.sky.draw(v, p);
     this.builder.draw(v, p);
   }
 }

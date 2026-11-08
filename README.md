@@ -1,9 +1,13 @@
 # Duel di Restoran Mi
 
+**Paket Environment v4.** Ekstrak seluruh ZIP, lalu buka `projek-webgl-environment-v4/index.html` dari folder hasil ekstraksi. Toolbar menampilkan label **Environment v4**; label ikut hilang ketika menekan H untuk merekam. Setiap script memiliki penanda versi pada URL untuk menghindari penggunaan cache script lama.
+
 Proyek WebGL murni dengan Kai, Oogway, dan Mr. Ping. Ekstrak seluruh ZIP ke folder baru, lalu buka `index.html` di Chrome/Edge. Tidak memerlukan npm atau aset dari internet. Jika file lokal dibatasi browser, gunakan VS Code Live Server atau `python -m http.server 8000`.
 
 ## Perubahan revisi ini
 
+- Environment diperluas dari fondasi 26 × 21 menjadi 36 × 30 unit, dengan 285 ubin berukuran tetap. Taman bambu, bangku, batu hias, pagar, tangga, dan pegunungan tiga lapis melengkapi sisi halaman.
+- `environment/Sky.js` menggambar langit bergradasi, awan, matahari, dan tanah luar sesuai arah pandang kamera. Tanah luar dihitung pada piksel yang terlihat agar tidak memerlukan peta besar. Ringkasan kode dan bagian laporan yang diperbarui ada di `PERUBAHAN-ENVIRONMENT.md`.
 - Model angsa memakai file `characters/MrPing.js` dan kelas `MrPing`. Referensi script, adapter rig, panel, dan panduan sudah memakai nama tersebut.
 - Dua ellipsoid tipis di depan dada Kai dihapus. Napas mengubah skala dua mesh torso asli (tubuh utama dan dada atas) bersama-sama melalui `Kai.breathe()`, sehingga tidak tertutup tubuh yang statis.
 - Napas memakai siklus 3 detik, kedalaman normal hingga 8.5% dan napas kuat hingga 12%. Dada mendapat cabang hierarki tersendiri; napas tidak memperbesar kepala, bahu, tangan, rantai, atau senjata.
@@ -51,3 +55,5 @@ Mulai dari `PANDUAN-KODE.md`. Bagian penting:
 Jangan mengambil `Kai.js` saja dari ZIP; revisi memerlukan seluruh script pendukung dan urutan pemuatan di index.html.
 
 Pratinjau napas normal pada pose tetap tersedia di `preview/napas-kai.gif`. Di aplikasi, pilih Penilaian → Kai → Scaling untuk melihat napas saat adegan berjalan.
+
+Pratinjau environment terbaru: `preview/environment-revisi.png`. Seluruh folder ZIP harus diekstrak agar `Sky.js` ikut dimuat oleh `index.html`.
